@@ -1,4 +1,4 @@
-# sinusRobot
+# ENT Robot Calibration, Navigation, and Visualization
 
 https://github.com/user-attachments/assets/d3ff68a3-32b9-4695-a259-b45feb5d314a
 
