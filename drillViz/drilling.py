@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Purpose: Generate and execute bone drilling path given mesh and target points
+# Purpose: Generate and animate bone drilling trajectory on a mesh based on user-selected target points
 
 
 import rospy
@@ -27,7 +27,7 @@ class trajectoryGenerator:
         self.mesh.compute_normals(cell_normals=True, point_normals=True, inplace=True)
 
         self.plotter = pv.Plotter()
-        self.plotter.enable_surface_point_picking(callback=self.clickCallback)
+        self.plotter.enable_surface_point_picking(callback=self.clickCallback, show_message=False)
         self.plotter.add_mesh(self.mesh, color='lightgray', opacity=1, name='mainMesh')
 
         drillMesh = pv.read('../example/drill.stl')
@@ -46,6 +46,15 @@ class trajectoryGenerator:
 
         self.maxGap = 1.0 # max gap between points in mm
         self.endpointTolerance = 0.2 # tolerance for reaching endpoint in mm
+
+        message = "Right click to select 3 target points: start, mid, end. Press 'c' to reset."
+        self.plotter.add_text(
+                message, 
+                position='upper_left', 
+                name="colorKey", 
+                font_size=10, 
+                color='black',
+        )
 
     def getSurfaceNormal(self, point) -> np.ndarray:
         """
@@ -266,16 +275,37 @@ class trajectoryGenerator:
             
             # at new point, get surface normal to orient drill
             surfaceNormal = self.getBarycentricNormal(new_pos)
-            normal = surfaceNormal / np.linalg.norm(surfaceNormal) # normalize normal vector
+            normal = surfaceNormal / np.linalg.norm(surfaceNormal)
+
+            # get 45 degree rotation shift
+            vel = np.array(interpolate.splev(current_u, self.tck, der=1))
+            vel /= np.linalg.norm(vel)
+            kVec = np.cross(normal, vel)
+            kVec /= np.linalg.norm(kVec)
+            kMat = np.array(
+                ((0, -kVec[2], kVec[1]),
+                (kVec[2], 0, -kVec[0]),
+                (-kVec[1], kVec[0], 0))
+            )
+            angle = np.deg2rad(45)
+            rot45 = (
+                np.eye(3) + (np.sin(angle)*kMat) 
+                + ( (1-np.cos(angle))*(kMat @ kMat))
+            )
 
             # turn normal into rotation matrix for drill orientation
             up = [0, 0, 1]
             right = np.cross(up, normal)
             trueUp = np.cross(normal, right)
+            origRot = np.eye(3)
+            origRot[0:3, 0] = right
+            origRot[0:3, 1] = trueUp
+            origRot[0:3, 2] = normal
+
+            rTot = origRot @ rot45 # shift by 45 degrees for ideal drilling angle
+
             transform = np.eye(4)
-            transform[0:3, 0] = right
-            transform[0:3, 1] = trueUp
-            transform[0:3, 2] = normal
+            transform[0:3, 0:3] = rTot
             transform[0:3, 3] = np.array([new_pos[0], new_pos[1], new_pos[2]])
 
             # update and render
