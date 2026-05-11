@@ -1,5 +1,7 @@
 ## drillViz/drilling.py
 
+https://github.com/user-attachments/assets/fd9796a3-4fb3-46b2-9828-444cb7d0e994
+
 Command-line tool to generate and visualize drilling trajectories on anatomical meshes using interactive point selection and spline-based path planning.
 
 ### Basic usage
