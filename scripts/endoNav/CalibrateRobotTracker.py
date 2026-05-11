@@ -270,7 +270,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "output_path",
         nargs="?",
-        default="../output/marker2gripper.txt",
+        default="../../output/marker2gripper.txt",
         type=Path,
         help="Required, path for output marker2gripper matrix .txt",
     )
