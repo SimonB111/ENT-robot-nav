@@ -42,9 +42,10 @@ Command-line tool to calibrate a robot and tracker by listening to ROS `PoseStam
 
 ### Basic usage
 
-python3 CalibrateRobotTracker.py <output_path>
+python3 CalibrateRobotTracker.py [output_path]
 
-- `output_path` (required): Path to the output `.txt` file where calibration results will be saved.
+- `output_path` (optional): Path to the output `.txt` file where the calibrated marker2gripper matrix will be saved.
+- Defaults to `../output/marker2gripper.txt` if omitted.
 
 ### Options
 
@@ -71,7 +72,7 @@ python3 VisualizeRobotTracker.py <marker2gripper_matrix>
 
 ### Options
 
-- `--custom_topics <gripper_topic> <gripper_marker_topic> <anatomy_marker_topic>`: Override default topics.
+- `--custom_topics <gripper_topic> <gripper_marker_topic> <anatomy_marker_topic>`: Override default topics (`/REMS/Research/measured_cp`, `/atracsys/Endoscope/measured_cp`, `/atracsys/Anatomy_measured_cp`).
 - `--endoscope2marker_matrix <path>`: Path to endoscope-to-marker transformation matrix (optional).
 - `--CT_pose <path>`: Path to CT scan pose matrix (optional).
 - `--CT_mesh <path>`: Path to CT mesh file (optional, defaults to `../example/Segmentation_Bone.stl`).
