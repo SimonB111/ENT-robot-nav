@@ -18,6 +18,8 @@ Command-line tool to generate and visualize drilling trajectories on anatomical 
 - Press 'c' to reset and select new target points
 - Visualizes plane intersection, spline path, and target points in 3D
 
+
+
 https://github.com/user-attachments/assets/d3ff68a3-32b9-4695-a259-b45feb5d314a
 
 **CalibrateRobotTracker.py** calibrates the marker2gripper homogeneous transformation matrix using OpenCV, extracting the needed data from a .bag file, or by listening to provided topics posting the desired poses.
