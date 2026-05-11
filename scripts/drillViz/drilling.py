@@ -29,7 +29,7 @@ class trajectoryGenerator:
         self.plotter.enable_surface_point_picking(callback=self.clickCallback, show_message=False)
         self.plotter.add_mesh(self.mesh, color='lightgray', opacity=1, name='mainMesh')
 
-        drillMesh = pv.read('../example/drill.stl')
+        drillMesh = pv.read('../../example/drill.stl')
         drillMesh.points *= (scale/1.35)
         self.drillActor = self.plotter.add_mesh(
             drillMesh, 
