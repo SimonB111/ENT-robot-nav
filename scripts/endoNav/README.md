@@ -31,7 +31,7 @@ python3 CalibrateRobotTracker.py results/calibration.txt --from_bag data/session
 Command-line tool to visualize robot poses and transformations using PyVista 3D rendering and ROS `PoseStamped` topics.
 
 <img width="541" height="322" alt="visualizeRobotFigure_surgicalScale_labeled" src="https://github.com/user-attachments/assets/6f5e0569-1946-44f6-ae92-91403ae5743d" />
-(2cm surgical scale axes)
+(2cm scale axes depicted)
 
 ### Basic usage
 
