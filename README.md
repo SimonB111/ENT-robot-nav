@@ -18,6 +18,8 @@ Command-line tool to generate and visualize drilling trajectories on anatomical 
 - Press 'c' to reset and select new target points
 - Visualizes plane intersection, spline path, and target points in 3D
 
+More information can be found [here](./scripts/drillViz/README.md)
+
 ---
 
 https://github.com/user-attachments/assets/d3ff68a3-32b9-4695-a259-b45feb5d314a
@@ -61,6 +63,8 @@ Command-line tool to visualize robot poses and transformations using PyVista 3D 
 - Live 3D visualization of gripper (red), endoscope (green), tracker (blue), and anatomy (brown) poses
 - Automatically subscribes to ROS topics and updates visualization in real-time
 - Static black axes at robot base (0,0,0)
+
+More information can be found [here](./scripts/endoNav/README.md)
 
 The tool runs ROS listener nodes by default and renders pose transformations using the provided matrices.
 
