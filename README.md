@@ -2,21 +2,11 @@
 
 ## drillViz/drilling.py
 
+https://github.com/user-attachments/assets/fd9796a3-4fb3-46b2-9828-444cb7d0e994
+
+This code uses Python 3.8.10.
+
 Command-line tool to generate and visualize drilling trajectories on anatomical meshes using interactive point selection and spline-based path planning.
-
-### Basic usage
-
-python3 drilling.py <mesh_input>
-
-- `mesh_input` (required): Path to the input mesh file (e.g. STL)
-
-### Options
-
-- `--meters2mm`: Convert mesh units from meters to millimeters (scale factor of 1000).
-
-**Example:**
-
-python3 drilling.py path/to/anatomy.stl --meters2mm
 
 ### Features
 
@@ -34,7 +24,7 @@ https://github.com/user-attachments/assets/d3ff68a3-32b9-4695-a259-b45feb5d314a
 
 **VisualizeRobotTracker.py** produces a 3D visualization of the various frames of a surgical robot in the base frame, including the base, optical tracker origin, and the corresponding markers/tip of the tool (endoscope tip here).
 
-This code was tested using the Noetic distro of ROS, using Python 3.8.10, in WSL2: Ubuntu-20.04. Ensure ROS Noetic is installed and call `roscore` prior to live calibration via the listener node.
+This code was tested using the Noetic distro of ROS, also using Python 3.8.10, in WSL2: Ubuntu-20.04. Ensure ROS Noetic is installed and call `roscore` prior to live calibration via the listener node.
 
 ## CalibrateRobotTracker
 
@@ -64,39 +54,11 @@ Command-line tool to visualize robot poses and transformations using PyVista 3D 
 <img width="541" height="322" alt="visualizeRobotFigure_surgicalScale_labeled" src="https://github.com/user-attachments/assets/6f5e0569-1946-44f6-ae92-91403ae5743d" />
 (2cm surgical scale axes)
 
-### Basic usage
-
-python3 VisualizeRobotTracker.py <marker2gripper_matrix>
-
-- `marker2gripper_matrix` (required): Path to `.txt` file with space-delimited 4x4 transformation matrix (marker → gripper).
-
-### Options
-
-- `--custom_topics <gripper_topic> <gripper_marker_topic> <anatomy_marker_topic>`: Override default topics (`/REMS/Research/measured_cp`, `/atracsys/Endoscope/measured_cp`, `/atracsys/Anatomy_measured_cp`).
-- `--endoscope2marker_matrix <path>`: Path to endoscope-to-marker transformation matrix (optional).
-- `--CT_pose <path>`: Path to CT scan pose matrix (optional).
-- `--CT_mesh <path>`: Path to CT mesh file (optional, defaults to `../example/Segmentation_Bone.stl`).
-- `--mesh_opacity <float>`: Opacity value (0.0-1.0, default: 0.5).
-- `--camera_JSON <path_to_camera_JSON>`: Optional, path to .json file containing camera intrinsics and distortion coefficients in the OpenCV camera calibration format.
-- `--camera_height <int>`: Optional, specify the height of the endoscope camera in pixels (default=240).
-
-
-**Example:**
-
-python3 VisualizeRobotTracker.py transforms/marker2gripper.txt --CT_mesh model.stl --mesh_opacity 0.7
-
-### Input file format
-
-Matrices must be space-delimited in `.txt` files, flattened 4x4 homogeneous transformation, such as:
-
-`0.2491029687780142 0.89378931217035 -0.37294554079118875 0.04453415322749031 -0.031509519094885655 -0.3774011125814647 -0.9255136684180745 -0.07724043695033155 -0.9679642871265389 0.2422995370864854 -0.0658488661655321 0.13850916435667032 0.0 0.0 0.0 1.0`
-
 ### Features
 
 - Live 3D visualization of gripper (red), endoscope (green), tracker (blue), and anatomy (brown) poses
-- The green axes represent the marker attached to the gripper if no endoscope2marker is provided, or if the identity matrix was manually provided (matching the default case)
-- Static black axes at robot base (0,0,0)
 - Automatically subscribes to ROS topics and updates visualization in real-time
+- Static black axes at robot base (0,0,0)
 
 The tool runs ROS listener nodes by default and renders pose transformations using the provided matrices.
 
