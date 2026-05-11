@@ -4,7 +4,7 @@
 
 https://github.com/user-attachments/assets/fd9796a3-4fb3-46b2-9828-444cb7d0e994
 
-This code uses Python 3.8.10.
+This code uses Python 3.8.10. Testing was done in WSL2: Ubuntu-20.04.
 
 Command-line tool to generate and visualize drilling trajectories on anatomical meshes using interactive point selection and spline-based path planning.
 
