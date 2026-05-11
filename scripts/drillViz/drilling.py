@@ -2,20 +2,22 @@
 # Purpose: Generate and animate bone drilling trajectory on a mesh based on user-selected target points
 
 
+import argparse
+import time
+from typing import Dict, List, Optional
+
+import numpy as np
 import pyvista as pv
 from scipy import interpolate
 from scipy.spatial import KDTree
 from scipy.spatial.transform import Rotation as Rot
-import time
-import numpy as np
-import argparse
 
 
 class trajectoryGenerator:
     """
     Class to generate and visualize drilling trajectory on a mesh based on user-selected target points.
     """
-    def __init__(self, meshInput, scale=1.0):
+    def __init__(self, meshInput: str, scale: float = 1.0) -> None:
         """Initialize the trajectory generator with the input mesh and scaling factor.
         Args:
             meshInput (str): Path to the input mesh file.
@@ -55,7 +57,7 @@ class trajectoryGenerator:
                 color='black',
         )
 
-    def getSurfaceNormal(self, point) -> np.ndarray:
+    def getSurfaceNormal(self, point: np.ndarray) -> np.ndarray:
         """
         Get the surface normal at a specific point on the mesh by finding the 
         closest face and averaging its vertex normals.
@@ -68,7 +70,7 @@ class trajectoryGenerator:
         avgNormal = np.mean(vNormals, axis=0)
         return avgNormal / np.linalg.norm(avgNormal) # normalize
     
-    def getBarycentricNormal(self, query_point) -> np.ndarray:
+    def getBarycentricNormal(self, query_point: np.ndarray) -> np.ndarray:
         """
         Interpolates a normal at a specific point on a 
         PyVista face using barycentric coordinates for smoothness.
@@ -113,7 +115,7 @@ class trajectoryGenerator:
         # final normalization for the rotation matrix
         return interpolated_n / np.linalg.norm(interpolated_n)
 
-    def makeIntersectionPoints(self) -> pv.PolyData:
+    def makeIntersectionPoints(self) -> Optional[pv.PolyData]:
         """
         Use slicing plane to get intersection points along trajectory path. 
         Plane is defined by 3 target points, with mid point defining direction.
@@ -140,7 +142,7 @@ class trajectoryGenerator:
 
         return intersectionPoly
 
-    def build_line_adjacency(self, poly):
+    def build_line_adjacency(self, poly: pv.PolyData) -> Dict[int, List[int]]:
         """Build adjacency list for line segments in the intersection polygon."""
         adjacency = {}
         lines = poly.lines
@@ -154,7 +156,14 @@ class trajectoryGenerator:
             i += n + 1
         return adjacency
 
-    def tracePath(self, points, adjacency, start_idx, next_idx, end_idx) -> list:
+    def tracePath(
+        self,
+        points: np.ndarray,
+        adjacency: Dict[int, List[int]],
+        start_idx: int,
+        next_idx: int,
+        end_idx: int,
+    ) -> Optional[List[int]]:
         """Trace a path from start_idx to end_idx through the adjacency graph, starting with next_idx."""
         path = [start_idx, next_idx]
         prev = start_idx
@@ -171,7 +180,13 @@ class trajectoryGenerator:
             path.append(cur)
         return path if cur == end_idx else None
 
-    def sortPoints(self, intersectionPoly, startPt, endPt, midPt) -> np.ndarray:
+    def sortPoints(
+        self,
+        intersectionPoly: Optional[pv.PolyData],
+        startPt: np.ndarray,
+        endPt: np.ndarray,
+        midPt: np.ndarray,
+    ) -> np.ndarray:
         """
         Sort intersection points to create a path from startPt to endPt, 
         using midPt to determine direction.
@@ -226,7 +241,7 @@ class trajectoryGenerator:
 
         return ordered_points
 
-    def makeSplinePath(self, sortedPoints) -> np.ndarray:
+    def makeSplinePath(self, sortedPoints: np.ndarray) -> np.ndarray:
         """Generate and visualize the spline path through the sorted intersection points."""
         self.tck, u = interpolate.splprep([sortedPoints[:, 0], sortedPoints[:, 1], sortedPoints[:, 2]], s=0, k=3)
 
@@ -239,7 +254,7 @@ class trajectoryGenerator:
         
         return pathFine
 
-    def animateDrill(self, speed_mms=2.0) -> None:
+    def animateDrill(self, speed_mms: float = 2.0) -> None:
         """
         tck: The spline representation from splprep
         u_fine: The original u values used to generate the path
@@ -311,7 +326,7 @@ class trajectoryGenerator:
             self.drillActor.user_matrix = transform
             self.plotter.render()
 
-    def clickCallback(self, point):
+    def clickCallback(self, point: Optional[np.ndarray]) -> None:
         if point is not None:
             print("Selected point: ", point)
             self.targetPoints[self.numPts] = point
