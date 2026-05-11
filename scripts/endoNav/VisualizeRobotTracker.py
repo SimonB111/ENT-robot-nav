@@ -41,7 +41,7 @@ class Robot:
         inputMarker2Gripper: np.array,
         inputEndo2Marker: np.array = np.eye(4),
         inputCTPose: np.array = np.eye(4),
-        inputMeshPath: str = "../example/Segmentation_Bone.stl",
+        inputMeshPath: str = "../../example/Segmentation_Bone.stl",
         inputMeshOpacity: float = 0.5,
         height: int = 240,
         K: np.array = None,
@@ -459,7 +459,7 @@ if __name__ == "__main__":
     if args.CT_mesh:  # handle optional CT mesh path input
         inputMeshPath = args.CT_mesh
     else:
-        inputMeshPath = "../example/Segmentation_Bone.stl"  # default ct mesh
+        inputMeshPath = "../../example/Segmentation_Bone.stl"  # default ct mesh
 
     if args.mesh_opacity:  # handle optional mesh opacity input
         meshOpacity = args.mesh_opacity
