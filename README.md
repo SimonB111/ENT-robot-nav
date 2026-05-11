@@ -68,4 +68,5 @@ More information can be found [here](./scripts/endoNav/README.md)
 
 The tool runs ROS listener nodes by default and renders pose transformations using the provided matrices.
 
-
+## Author
+- Simon Brown 
